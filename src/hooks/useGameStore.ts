@@ -51,30 +51,43 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     const roll = Math.floor(Math.random() * 6) + 1;
     set({ diceValue: roll });
     const currentPlayer = get().players[get().currentPlayerIndex];
-    const newPosition = currentPlayer.position + roll;
+    const potentialPosition = currentPlayer.position + roll;
+    const switchTurn = () => {
+        const nextPlayerIndex = (get().currentPlayerIndex + 1) % get().players.length;
+        set({
+          currentPlayerIndex: nextPlayerIndex,
+          isMoving: false,
+          gameMessage: `Player ${get().players[nextPlayerIndex].id}'s turn to roll!`,
+        });
+    }
+    if (potentialPosition > BOARD_SIZE) {
+      // Player overshot, doesn't move.
+      setTimeout(() => {
+        set({ gameMessage: `Player ${currentPlayer.id} rolled a ${roll}. Needs ${BOARD_SIZE - currentPlayer.position} to win.` });
+        switchTurn();
+      }, 500);
+      return;
+    }
     const movePlayer = (targetPosition: number) => {
-      let finalPosition = targetPosition;
-      if (finalPosition > BOARD_SIZE) {
-        finalPosition = BOARD_SIZE;
-      }
       const players = get().players.map((p) =>
-        p.id === currentPlayer.id ? { ...p, position: finalPosition } : p
+        p.id === currentPlayer.id ? { ...p, position: targetPosition } : p
       );
       set({ players });
       // Check for win condition
-      if (finalPosition === BOARD_SIZE) {
+      if (targetPosition === BOARD_SIZE) {
         set({
           gameStatus: 'finished',
           winner: currentPlayer,
           gameMessage: `Player ${currentPlayer.id} wins!`,
+          isMoving: false,
         });
         return;
       }
       // Check for snakes or ladders
-      const specialMove = SNAKES_AND_LADDERS[finalPosition];
+      const specialMove = SNAKES_AND_LADDERS[targetPosition];
       if (specialMove) {
         setTimeout(() => {
-          const message = specialMove > finalPosition ? `Player ${currentPlayer.id} found a ladder! Climbing to ${specialMove}.` : `Player ${currentPlayer.id} was bitten by a snake! Sliding to ${specialMove}.`;
+          const message = specialMove > targetPosition ? `Player ${currentPlayer.id} found a ladder! Climbing to ${specialMove}.` : `Player ${currentPlayer.id} was bitten by a snake! Sliding to ${specialMove}.`;
           set({ gameMessage: message });
           const playersWithSpecialMove = get().players.map((p) =>
             p.id === currentPlayer.id ? { ...p, position: specialMove } : p
@@ -88,17 +101,9 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
         switchTurn();
       }
     };
-    const switchTurn = () => {
-        const nextPlayerIndex = (get().currentPlayerIndex + 1) % get().players.length;
-        set({
-          currentPlayerIndex: nextPlayerIndex,
-          isMoving: false,
-          gameMessage: `Player ${get().players[nextPlayerIndex].id}'s turn to roll!`,
-        });
-    }
     setTimeout(() => {
-        set({ gameMessage: `Player ${currentPlayer.id} rolled a ${roll} and moves to ${Math.min(newPosition, BOARD_SIZE)}.` });
-        movePlayer(newPosition);
+        set({ gameMessage: `Player ${currentPlayer.id} rolled a ${roll} and moves to ${potentialPosition}.` });
+        movePlayer(potentialPosition);
     }, 500);
   },
   resetGame: () => {

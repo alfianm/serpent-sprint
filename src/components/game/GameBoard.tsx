@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useGameStore } from '@/hooks/useGameStore';
 import { BOARD_DIMENSION, SNAKES_AND_LADDERS } from '@/lib/constants';
 import { PlayerPawn } from './PlayerPawn';
-import { GitCommit, GitMerge } from 'lucide-react'; // Snake and Ladder icons
+import { GitCommit, GitMerge, Trophy } from 'lucide-react'; // Snake, Ladder, and Trophy icons
 const getPosition = (square: number): { x: number; y: number } => {
   const row = Math.floor((square - 1) / BOARD_DIMENSION);
   let col = (square - 1) % BOARD_DIMENSION;
@@ -39,6 +39,9 @@ export function GameBoard() {
             <span className="absolute top-1 left-1 text-xs font-bold text-gray-500 dark:text-gray-400">
               {squareNumber}
             </span>
+            {squareNumber === 100 && (
+              <Trophy className="text-yellow-500 text-3xl opacity-70" />
+            )}
             {SNAKES_AND_LADDERS[squareNumber] && (
               <div className="absolute center text-2xl opacity-50">
                 {SNAKES_AND_LADDERS[squareNumber] > squareNumber ? (
