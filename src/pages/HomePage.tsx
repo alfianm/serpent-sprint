@@ -17,8 +17,10 @@ export function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="py-8 md:py-10 lg:py-12">
               <header className="text-center mb-8">
-                <h1 className="text-5xl md:text-6xl font-bold text-blue-500">Serpent Sprint</h1>
-                <p className="text-muted-foreground text-lg mt-2">First to 100 wins!</p>
+                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-400">
+                  Serpent Sprint
+                </h1>
+                <p className="text-muted-foreground text-lg md:text-xl mt-2 font-medium">First to 100 wins!</p>
               </header>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2">
@@ -37,7 +39,7 @@ export function HomePage() {
     }
   };
   return (
-    <main className="min-h-screen bg-background text-foreground relative">
+    <main className="min-h-screen bg-background text-foreground relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-100/50 to-yellow-200/50 dark:from-gray-800/50 dark:to-gray-900/50">
       <ThemeToggle />
       {renderGameContent()}
       {gameStatus !== 'setup' && (

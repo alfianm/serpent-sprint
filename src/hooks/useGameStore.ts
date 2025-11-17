@@ -13,6 +13,7 @@ interface GameState {
   winner: Player | null;
   isMoving: boolean;
   gameMessage: string;
+  specialMove: { from: number; to: number; type: 'snake' | 'ladder' } | null;
 }
 interface GameActions {
   setupGame: (playerCount: number) => void;
@@ -27,6 +28,7 @@ const initialState: GameState = {
   winner: null,
   isMoving: false,
   gameMessage: '',
+  specialMove: null,
 };
 export const useGameStore = create<GameState & GameActions>((set, get) => {
   const switchTurn = () => {
@@ -39,7 +41,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => {
   };
   const handlePostMove = (finalPosition: number) => {
     const currentPlayer = get().players[get().currentPlayerIndex];
-    // Check for win condition
     if (finalPosition === BOARD_SIZE) {
       set({
         gameStatus: 'finished',
@@ -49,23 +50,28 @@ export const useGameStore = create<GameState & GameActions>((set, get) => {
       });
       return;
     }
-    // Check for snakes or ladders
-    const specialMove = SNAKES_AND_LADDERS[finalPosition];
-    if (specialMove) {
+    const specialMoveTarget = SNAKES_AND_LADDERS[finalPosition];
+    if (specialMoveTarget) {
+      const isLadder = specialMoveTarget > finalPosition;
+      const message = isLadder
+        ? `Player ${currentPlayer.id} found a ladder! Climbing to ${specialMoveTarget}.`
+        : `Player ${currentPlayer.id} was bitten by a snake! Sliding to ${specialMoveTarget}.`;
+      set({
+        gameMessage: message,
+        specialMove: {
+          from: finalPosition,
+          to: specialMoveTarget,
+          type: isLadder ? 'ladder' : 'snake',
+        },
+      });
       setTimeout(() => {
-        const message = specialMove > finalPosition
-          ? `Player ${currentPlayer.id} found a ladder! Climbing to ${specialMove}.`
-          : `Player ${currentPlayer.id} was bitten by a snake! Sliding to ${specialMove}.`;
-        set({ gameMessage: message });
         const playersWithSpecialMove = get().players.map((p) =>
-          p.id === currentPlayer.id ? { ...p, position: specialMove } : p
+          p.id === currentPlayer.id ? { ...p, position: specialMoveTarget } : p
         );
-        set({ players: playersWithSpecialMove });
-        // After special move, switch turn
-        setTimeout(switchTurn, 750);
-      }, 1000);
+        set({ players: playersWithSpecialMove, specialMove: null });
+        setTimeout(switchTurn, 500);
+      }, 1200);
     } else {
-      // If no special move, switch turn
       switchTurn();
     }
   };
@@ -110,9 +116,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => {
             p.id === currentPlayer.id ? { ...p, position: newPosition } : p
           );
           set({ players });
-          setTimeout(step, 200); // Animation speed for each step
+          setTimeout(step, 200);
         } else {
-          // Stepping animation is complete, handle the final position
           handlePostMove(potentialPosition);
         }
       };

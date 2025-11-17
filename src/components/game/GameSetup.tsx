@@ -6,10 +6,12 @@ import { Users } from 'lucide-react';
 export function GameSetup() {
   const setupGame = useGameStore((state) => state.setupGame);
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <Card className="w-full max-w-md shadow-2xl animate-scale-in">
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <Card className="w-full max-w-md shadow-2xl animate-scale-in border-2 border-primary/20">
         <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-bold text-blue-500">Serpent Sprint</CardTitle>
+          <CardTitle className="text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-400">
+            Serpent Sprint
+          </CardTitle>
           <CardDescription className="text-lg">A modern Snakes & Ladders game.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -21,8 +23,7 @@ export function GameSetup() {
               <Button
                 key={count}
                 onClick={() => setupGame(count)}
-                className="py-8 text-lg font-bold transition-transform hover:scale-105"
-                variant="outline"
+                className="py-8 text-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95"
               >
                 <Users className="mr-2 h-5 w-5" />
                 {count} Player{count > 1 ? 's' : ''}
