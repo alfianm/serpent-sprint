@@ -2,7 +2,7 @@
 
 A playful and modern Snakes and Ladders web game for up to four players with a delightful, kid-friendly design.
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/alfianm/serpent-sprint)
 
 Serpent Sprint is a modern, web-based adaptation of the classic Snakes and Ladders board game, designed with a playful and vibrant 'Kid Playful' aesthetic. The game supports 1 to 4 players and features a beautifully illustrated 10x10 game board. Players take turns rolling a digital die and moving their pawn across the board, aiming to be the first to reach square 100. Landing on a ladder allows a player to climb ahead, while landing on a snake's head sends them sliding back down. The user interface is designed to be intuitive and delightful, with smooth animations for pawn movement, an animated dice roll, and a celebratory confetti effect for the winner. The entire game is a single-page application, managed with a centralized state store for a seamless and responsive experience.
 
@@ -72,7 +72,7 @@ This project is configured for easy deployment to **Cloudflare Workers**.
 
 ### Deploy with a single click
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/alfianm/serpent-sprint)
 
 ### Manual Deployment via Wrangler
 
