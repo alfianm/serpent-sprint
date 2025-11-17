@@ -19,16 +19,16 @@ export const SNAKES_AND_LADDERS: Record<number, number> = {
   99: 78,
 };
 export const PLAYER_COLORS = [
-  'bg-player1',
-  'bg-player2',
-  'bg-player3',
-  'bg-player4',
+  'bg-red-500',
+  'bg-blue-500',
+  'bg-green-500',
+  'bg-yellow-500',
 ];
 export const PLAYER_COLORS_TEXT = [
-  'text-player1',
-  'text-player2',
-  'text-player3',
-  'text-player4',
+  'text-red-500',
+  'text-blue-500',
+  'text-green-500',
+  'text-yellow-500',
 ];
 export const BOARD_SIZE = 100;
 export const BOARD_DIMENSION = 10;

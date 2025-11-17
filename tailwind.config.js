@@ -91,6 +91,10 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+            player1: 'rgb(var(--player-1))',
+            player2: 'rgb(var(--player-2))',
+            player3: 'rgb(var(--player-3))',
+            player4: 'rgb(var(--player-4))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			muted: {
