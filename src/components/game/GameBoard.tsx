@@ -1,10 +1,11 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useGameStore } from '@/hooks/useGameStore';
 import { BOARD_DIMENSION, SNAKES_AND_LADDERS } from '@/lib/constants';
 import { PlayerPawn } from './PlayerPawn';
-import { GitCommit, GitMerge, Trophy } from 'lucide-react'; // Snake, Ladder, and Trophy icons
+import { Trophy } from 'lucide-react';
+import { Snake } from './Snake';
+import { Ladder } from './Ladder';
 const getPosition = (square: number): { x: number; y: number } => {
   const row = Math.floor((square - 1) / BOARD_DIMENSION);
   let col = (square - 1) % BOARD_DIMENSION;
@@ -42,18 +43,25 @@ export function GameBoard() {
             {squareNumber === 100 && (
               <Trophy className="text-yellow-500 text-3xl opacity-70" />
             )}
-            {SNAKES_AND_LADDERS[squareNumber] && (
-              <div className="absolute center text-2xl opacity-50">
-                {SNAKES_AND_LADDERS[squareNumber] > squareNumber ? (
-                  <GitMerge className="text-green-600 rotate-[-45deg]" />
-                ) : (
-                  <GitCommit className="text-red-600 rotate-[45deg]" />
-                )}
-              </div>
-            )}
           </div>
         );
       })}
+      <svg
+        className="absolute top-0 left-0 w-full h-full pointer-events-none"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        {Object.entries(SNAKES_AND_LADDERS).map(([start, end]) => {
+          const startPos = getPosition(Number(start));
+          const endPos = getPosition(end);
+          const isLadder = end > Number(start);
+          return isLadder ? (
+            <Ladder key={`${start}-${end}`} start={startPos} end={endPos} />
+          ) : (
+            <Snake key={`${start}-${end}`} start={startPos} end={endPos} />
+          );
+        })}
+      </svg>
       {players.map((player) => (
         <PlayerPawn
           key={player.id}
